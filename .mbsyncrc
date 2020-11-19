@@ -1,0 +1,150 @@
+# Gmail
+IMAPAccount gmail
+Host imap.gmail.com
+User donvini94@gmail.com
+PassCmd "pass Email/donvini94@gmail.com"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore gmail-remote
+Account gmail
+
+MaildirStore gmail-local
+Path ~/.mail/gmail/
+Inbox ~/.mail/gmail/Inbox
+SubFolders Legacy
+
+Channel gmail
+Master :gmail-remote:
+Slave :gmail-local:
+Patterns "[Gmail]/Sent Mail" "[Gmail]/All Mail"
+Create Both
+SyncState *
+Sync All
+
+# KIT
+IMAPAccount kit
+Host imap.kit.edu
+User uneqy@student.kit.edu
+PassCmd "pass Email/uneqy@student.kit.edu"
+SSLType IMAPS
+AuthMechs Login
+CertificateFile /etc/ssl/certs/ca-bundle.crt
+
+IMAPStore kit-remote
+Account kit
+
+MaildirStore kit-local
+Path ~/.mail/kit/
+Inbox ~/.mail/kit/Inbox
+SubFolders Verbatim
+
+Channel kit
+Master :kit-remote:
+Slave :kit-local:
+Patterns *
+Create Both
+#Sync All
+Expunge Both
+SyncState *
+
+IMAPAccount icloud
+Host imap.mail.me.com
+User vincenzo.pace94 #not XXX@me.com etc.
+PassCmd "pass mbsync/icloud"
+Port 993
+Timeout 0
+SSLType IMAPS
+SSLVersions TLSv1.2
+AuthMechs PLAIN
+PipelineDepth 1
+
+
+IMAPStore icloud-remote
+Account icloud
+
+MaildirStore icloud-local
+Path ~/.mail/icloud/
+Inbox ~/.mail/icloud/inbox
+Trash Trash
+
+#
+# Channels and Groups 
+# (so that we can rename local directories and flatten the hierarchy)
+#
+#
+Channel icloud-folders
+Master :icloud-remote:
+Slave :icloud-local:
+Patterns "INBOX" "Saved" "Drafts" "Archive" "Sent*" "Trash"
+Create Both
+Expunge Both
+SyncState *
+
+Group icloud
+Channel icloud-folders
+
+
+
+# Mailbox
+IMAPAccount mailbox
+Host imap.mailbox.org
+User vincenzo.pace@mailbox.org
+PassCmd "pass Email/vincenzo.pace@mailbox.org"
+SSLType IMAPS
+SSLVersions TLSv1.2
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+# Remote storage
+IMAPStore mailbox-remote
+Account mailbox
+
+# Local storage
+MaildirStore mailbox-local
+Path ~/.mail/mailbox/
+Inbox ~/.mail/mailbox/INBOX
+
+Channel mailbox-inbox
+Master :mailbox-remote:"INBOX"
+Slave :mailbox-local:INBOX
+Create Both
+Expunge Both
+
+Channel mailbox-archive
+Master :mailbox-remote:"Archiv"
+Slave :mailbox-local:archive
+Create Both
+Expunge Both
+
+Channel mailbox-drafts
+Master :mailbox-remote:"Entw&APw-rfe"
+Slave :mailbox-local:drafts
+Create Both
+Expunge Both
+
+Channel mailbox-sent
+Master :mailbox-remote:"Gesendete Objekte"
+Slave :mailbox-local:sent
+Create Both
+Expunge Both
+
+Channel mailbox-trash
+Master :mailbox-remote:"Papierkorb"
+Slave :mailbox-local:trash
+Create Both
+Expunge Both
+
+Channel mailbox-junk
+Master :mailbox-remote:"Spam"
+Slave :mailbox-local:junk
+Create Both
+Expunge Both
+
+Group mailbox
+Channel mailbox-inbox
+Channel mailbox-archive
+Channel mailbox-drafts
+Channel mailbox-sent
+Channel mailbox-trash
+Channel mailbox-junk
+
