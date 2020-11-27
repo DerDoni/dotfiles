@@ -25,10 +25,17 @@ alias status='git status'
 alias tag='git tag'
 alias newtag='git tag -a'
 
+# VPN
+alias nordc='systemctl start openvpn-nordVPN.service'
+alias nordd='systemctl stop openvpn-nordVPN.service'
+alias kitd='systemctl stop openvpn-uniVPN.service'
+alias kitc='systemctl start openvpn-uniVPN.service'
 
 # Nix
 alias uphome='home-manager switch -f ~/nix-config/home.nix'
 
+# Server
+alias vps='ssh root@173.249.8.100'
 # config
 alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 

@@ -81,7 +81,7 @@ myTerminal :: String
 myTerminal = "alacritty"   -- Sets default terminal
 
 myBrowser :: String
-myBrowser = "firefox"
+myBrowser = "brave"
 
 myMediaPlayer :: String
 myMediaPlayer = "spotify"
@@ -107,7 +107,7 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 myStartupHook :: X ()
 myStartupHook = do
           spawnOnce "nitrogen --restore &"
---           spawnOnce "picom &"
+          -- spawnOnce "picom &"
           spawnOnce "volumeicon &"
           spawnOnce "trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 0 --tint 0x282c34  --height 24 &"
           spawnOnce "/usr/bin/emacs --daemon &"
@@ -138,7 +138,7 @@ dtXPConfig = def
       -- , defaultPrompter     = unwords . map reverse . words  -- reverse the prompt
       -- , defaultPrompter     = drop 5 .id (++ "XXXX: ")  -- drop first 5 chars of prompt and add XXXX:
       , alwaysHighlight     = True
-      , maxComplRows        = Nothing      -- set to 'Just 5' for 5 rows
+      , maxComplRows        = Nothing      -- set t 'Just 5' for 5 rows
       }
 
 -- The same config above minus the autocomplete feature which is annoying
@@ -359,7 +359,8 @@ myManageHook = composeAll
      , className =? "mpv"     --> doShift ( myWorkspaces !! 7 )
      , className =? "vlc"     --> doShift ( myWorkspaces !! 7 )
      , className =? "Gimp"    --> doShift ( myWorkspaces !! 8 )
-     , className =? "Spotify"    --> doShift ( myWorkspaces !! 6 )
+     , title =? "Spotify Premium"    --> doShift ( myWorkspaces !! 6 )
+     , title =? "Discord"    --> doShift ( myWorkspaces !! 5 )
      , className =? "Gimp"    --> doFloat
      , title =? "Oracle VM VirtualBox Manager"     --> doFloat
      , className =? "VirtualBox Manager" --> doShift  ( myWorkspaces !! 4 )
@@ -386,6 +387,8 @@ myKeys =
         , ("M-S-h", spawn (myTerminal ++ " -e htop"))
         , ("M-m", spawn(myMediaPlayer))
         , ("M-r", spawn(myTerminal ++ " -e ranger"))
+        , ("M-a", spawn("anki"))
+        , ("M-S-p", spawn("Discord"))
 
     -- Kill windows
         , ("M-q", kill1)                         -- Kill the currently focused client
