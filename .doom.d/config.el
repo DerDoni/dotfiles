@@ -162,7 +162,7 @@
 
   (defun +notmuch-delete-all ()
     "Archive all the emails in the current view.
-Mark them for deletion by cron job."
+    Mark them for deletion by cron job."
     (interactive)
     (notmuch-search-tag-all '("+deleted"))
     (+notmuch-archive-all)))

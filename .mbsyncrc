@@ -110,41 +110,6 @@ Slave :mailbox-local:INBOX
 Create Both
 Expunge Both
 
-Channel mailbox-archive
-Master :mailbox-remote:"Archiv"
-Slave :mailbox-local:archive
-Create Both
-Expunge Both
-
-Channel mailbox-drafts
-Master :mailbox-remote:"Entw&APw-rfe"
-Slave :mailbox-local:drafts
-Create Both
-Expunge Both
-
-Channel mailbox-sent
-Master :mailbox-remote:"Gesendete Objekte"
-Slave :mailbox-local:sent
-Create Both
-Expunge Both
-
-Channel mailbox-trash
-Master :mailbox-remote:"Papierkorb"
-Slave :mailbox-local:trash
-Create Both
-Expunge Both
-
-Channel mailbox-junk
-Master :mailbox-remote:"Spam"
-Slave :mailbox-local:junk
-Create Both
-Expunge Both
-
 Group mailbox
 Channel mailbox-inbox
-Channel mailbox-archive
-Channel mailbox-drafts
-Channel mailbox-sent
-Channel mailbox-trash
-Channel mailbox-junk
 

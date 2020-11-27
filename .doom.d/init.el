@@ -75,9 +75,9 @@
        :term
        ;;eshell            ; the elisp shell that works everywhere
        ;;shell             ; simple shell REPL for Emacs
-       term              ; basic terminal emulator for Emacs
-       ;;vterm             ; the best terminal emulation in Emacs
-
+       ;;term              ; basic terminal emulator for Emacs
+       (vterm             ; the best terminal emulation in Emacs
+        :load-path  "home/vincenzo/.doom.d/emacs-libvterm/")
        :checkers
        (syntax +childframe) ; tasing you for every semicolon you forget
        spell             ; tasing you for misspelling mispelling
@@ -174,7 +174,7 @@
        ;;(wanderlust +gmail)
 
        :app
-       ;;calendar
+       calendar
        ;;irc               ; how neckbeards socialize
        ;;(rss +org)        ; emacs as an RSS reader
        ;;twitter           ; twitter client https://twitter.com/vnought

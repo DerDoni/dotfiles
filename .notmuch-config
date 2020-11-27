@@ -30,8 +30,8 @@ path=/home/vincenzo/.mail
 #
 [user]
 name=Vincenzo Pace
-primary_email=vincenzo.pace94@icloud.com
-other_email=donvini94@gmail.com;uneqy@student.kit.edu;
+primary_email=vincenzo.pace@mailbox.org
+other_email=donvini94@gmail.com;uneqy@student.kit.edu;vincenzo.pace94@icloud.com;
 
 # Configuration for "notmuch new"
 #
