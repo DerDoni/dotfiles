@@ -1,0 +1,42 @@
+alias vim="nvim"
+
+# confirm before overwriting something
+alias cp="cp -i"
+alias mv='mv -i'
+alias rm='rm -i'
+
+# git
+alias addup='git add -u'
+alias addall='git add .'
+alias branch='git branch'
+alias checkout='git checkout'
+alias clone='git clone'
+alias commit='git commit -m'
+alias fetch='git fetch'
+alias pull='git pull origin'
+alias push='git push origin'
+alias status='git status'
+alias tag='git tag'
+alias newtag='git tag -a'
+
+# VPN
+alias nordc='systemctl start openvpn-nordVPN.service'
+alias nordd='systemctl stop openvpn-nordVPN.service'
+alias kitd='systemctl stop openvpn-uniVPN.service'
+alias kitc='systemctl start openvpn-uniVPN.service'
+
+# Nix
+alias uphome='home-manager switch -f ~/nix-config/home.nix'
+
+# Server
+alias vps='ssh vincenzo@173.249.8.100'
+alias pi='ssh pi@pi'
+# config
+alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+
+
+# Hue
+alias hueadm='hueadm -H 192.168.178.32 -U 0vFgzbWOyulQTHbS8iN4ukxmHRdPtBg9hxUAKITk'
+alias gosleep='hueadm -H 192.168.178.32 -U 0vFgzbWOyulQTHbS8iN4ukxmHRdPtBg9hxUAKITk group 3 off'
+alias lightson='hueadm -H 192.168.178.32 -U 0vFgzbWOyulQTHbS8iN4ukxmHRdPtBg9hxUAKITk group 3 on bri=254'
+alias worklate='hueadm -H 192.168.178.32 -U 0vFgzbWOyulQTHbS8iN4ukxmHRdPtBg9hxUAKITk group 3 on bri=100'
