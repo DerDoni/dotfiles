@@ -5,6 +5,7 @@ User donvini94@gmail.com
 PassCmd "pass Email/donvini94@gmail.com"
 SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
+AuthMechs LOGIN
 
 IMAPStore gmail-remote
 Account gmail
@@ -12,12 +13,12 @@ Account gmail
 MaildirStore gmail-local
 Path ~/.mail/gmail/
 Inbox ~/.mail/gmail/Inbox
-SubFolders Legacy
+SubFolders Verbatim
 
 Channel gmail
 Master :gmail-remote:
 Slave :gmail-local:
-Patterns "[Gmail]/Sent Mail" "[Gmail]/All Mail"
+#Patterns "[Gmail]/Sent Mail" "[Gmail]/All Mail"
 Create Both
 SyncState *
 Sync All
