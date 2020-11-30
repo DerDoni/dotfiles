@@ -1,0 +1,10 @@
+--ignore-errors
+--write-annotations
+--cookies cookies.txt
+
+--format ("bestvideo[width>=1920]"/bestvideo)+bestaudio/best
+--no-playlist
+--merge-output-format mp4
+--download-archive archive.txt
+--output "/media/YouTube/%(uploader)s/%(upload_date)s.%(title)s.%(id)s.%(ext)s"
+--restrict-filenames
