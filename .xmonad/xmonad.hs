@@ -87,7 +87,7 @@ myMediaPlayer :: String
 myMediaPlayer = "spotify"
 
 myEditor :: String
-myEditor = "emacsclient -c -a emacs "  
+myEditor = "emacs "  
 
 myBorderWidth :: Dimension
 myBorderWidth = 4          -- Sets border width for windows
@@ -108,9 +108,9 @@ myStartupHook :: X ()
 myStartupHook = do
           spawnOnce "nitrogen --restore &"
           -- spawnOnce "picom &"
-          spawnOnce "volumeicon &"
-          spawnOnce "trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 0 --tint 0x282c34  --height 24 &"
-          spawnOnce "/usr/bin/emacs --daemon &"
+          -- spawnOnce "volumeicon &"
+          -- spawnOnce "trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 0 --tint 0x282c34  --height 24 &"
+          -- spawnOnce "/usr/bin/emacs --daemon &"
           -- spawnOnce "kak -d -s mysession &"
 
 
@@ -458,7 +458,7 @@ myKeys =
         , ("M-u <Space>", spawn "mocp --toggle-pause")
 
     -- Emacs (CTRL-e followed by a key)
-        , ("C-e e", spawn "emacsclient -c -a 'emacs'")                            -- start emacs
+        , ("C-e e", spawn "emacs")                            -- start emacs
         , ("C-e b", spawn "emacsclient -c -a 'emacs' --eval '(ibuffer)'")         -- list emacs buffers
         , ("C-e d", spawn "emacsclient -c -a 'emacs' --eval '(dired nil)'")       -- dired emacs file manager
         , ("C-e i", spawn "emacsclient -c -a 'emacs' --eval '(erc)'")             -- erc emacs irc client

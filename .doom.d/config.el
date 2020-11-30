@@ -46,7 +46,7 @@
 
 
 (setq user-full-name "Vincenzo Pace"
-      user-mail-address "vincenzo.pace94@icloud.com"
+      user-mail-address "vincenzo.pace@mailbox.org"
       display-line-numbers-type nil
       confirm-kill-emacs nil)
 
