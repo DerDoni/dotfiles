@@ -458,7 +458,7 @@ myKeys =
         , ("M-u <Space>", spawn "mocp --toggle-pause")
 
     -- Emacs (CTRL-e followed by a key)
-        , ("C-e e", spawn "emacs")                            -- start emacs
+        , ("C-e e", spawn "emacsclient -c -a 'emacs'")                            -- start emacs
         , ("C-e b", spawn "emacsclient -c -a 'emacs' --eval '(ibuffer)'")         -- list emacs buffers
         , ("C-e d", spawn "emacsclient -c -a 'emacs' --eval '(dired nil)'")       -- dired emacs file manager
         , ("C-e i", spawn "emacsclient -c -a 'emacs' --eval '(erc)'")             -- erc emacs irc client
