@@ -83,7 +83,7 @@
   (require 'org-bullets)  ; Nicer bullets in org-mode
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
   (setq org-directory "~/org/"
-        org-agenda-files '("~/org/agenda.org")
+        org-agenda-files '("~/org")
         org-default-notes-file (expand-file-name "notes.org" org-directory)
         org-ellipsis " ▼ "
         org-log-done 'time
