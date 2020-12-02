@@ -91,6 +91,7 @@
         org-journal-date-format "%B %d, %Y (%A)"
         org-journal-file-format "%Y-%m-%d.org"
         org-hide-emphasis-markers t
+        org-pomodoro-manual-break t
         ;; ex. of org-link-abbrev-alist in action
         ;; [[arch-wiki:Name_of_Page][Description]]
         org-link-abbrev-alist    ; This overwrites the default Doom org-link-abbrev-list
@@ -113,7 +114,6 @@
 (use-package! notmuch
   :commands (notmuch)
   :init
-;;  (map! :desc "notmuch" "<f2>" #'notmuch)
   (map! :map notmuch-search-mode-map
         :desc "toggle read" "t" #'+notmuch/toggle-read
         :desc "Reply to thread" "r" #'notmuch-search-reply-to-thread
