@@ -35,7 +35,7 @@ alias pi='ssh pi@pi'
 alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 # Pi
-alias transmission-remote="transmission-remote pi -n 'vincenzo:win3ktv5'"
+alias transmission-remote="transmission-remote pi -n 'vincenzo:password'"
 # Hue
 alias hueadm='hueadm -H 192.168.178.32 -U 0vFgzbWOyulQTHbS8iN4ukxmHRdPtBg9hxUAKITk'
 alias gosleep='hueadm -H 192.168.178.32 -U 0vFgzbWOyulQTHbS8iN4ukxmHRdPtBg9hxUAKITk group 3 off'
