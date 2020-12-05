@@ -1,6 +1,7 @@
 export PATH=$PATH:/home/vincenzo/.emacs.d/bin
 export TERM="xterm-256color"
 
+<<<<<<< HEAD
 # Functions
  
 rga-fzf() {
@@ -17,5 +18,7 @@ rga-fzf() {
 	xdg-open "$file"
 }
 
+=======
+>>>>>>> e9a5a61405e41f0cd3fb6c01962053a64a0aa29e
 source ~/.aliasrc
 eval "$(starship init bash)"
