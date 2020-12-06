@@ -427,7 +427,7 @@ myKeys =
     -- Layouts
         , ("M-<Tab>", sendMessage NextLayout)           -- Switch to next layout
         , ("M-f", sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts) -- Toggles noborder/full
-
+        , ("M-S-f", sendMessage (T.Toggle "floats")) -- Toggles my 'floats' layout
     -- Increase/decrease windows in the master pane or the stack
         , ("M-S-<Up>", sendMessage (IncMasterN 1))      -- Increase number of clients in master pane
         , ("M-S-<Down>", sendMessage (IncMasterN (-1))) -- Decrease number of clients in master pane
