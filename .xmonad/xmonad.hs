@@ -356,7 +356,9 @@ myManageHook = composeAll
      -- I'm doing it this way because otherwise I would have to write out the full
      -- name of my workspaces, and the names would very long if using clickable workspaces.
      [ title =? "Mozilla Firefox"     --> doShift ( myWorkspaces !! 1 )
+     , title =? "Brave"       --> doShift ( myWorkspaces !! 1 )
      , className =? "mpv"     --> doShift ( myWorkspaces !! 7 )
+     , className =? "Anki"       --> doShift ( myWorkspaces !! 3 )
      , className =? "vlc"     --> doShift ( myWorkspaces !! 7 )
      , className =? "Gimp"    --> doShift ( myWorkspaces !! 8 )
      , title =? "Spotify Premium"    --> doShift ( myWorkspaces !! 6 )
@@ -389,10 +391,13 @@ myKeys =
         , ("M-r", spawn(myTerminal ++ " -e ranger"))
         , ("M-a", spawn("anki"))
         , ("M-S-p", spawn("Discord"))
+	, ("M-S-a", spawn(myTerminal ++ " -e alsamixer"))
+	, ("M-s", spawn("flameshot gui"))
 
     -- Kill windows
         , ("M-q", kill1)                         -- Kill the currently focused client
-        , ("M-S-a", killAll)                       -- Kill all windows on current workspace
+    --    , ("M-S-a", killAll)                       -- Kill all windows on current workspace
+        , ("M-S-x", spawn("systemctl hibernate"))
 
     -- Workspaces
         , ("M-.", nextWS)  -- Switch focus to next monitor
@@ -477,7 +482,7 @@ myKeys =
         ]
     -- Appending search engine prompts to keybindings list.
     -- Look at "search engines" section of this config for values for "k".
-        ++ [("M-s " ++ k, S.promptSearch dtXPConfig' f) | (k,f) <- searchList ]
+        ++ [("M-C-s " ++ k, S.promptSearch dtXPConfig' f) | (k,f) <- searchList ]
         ++ [("M-S-s " ++ k, S.selectSearch f) | (k,f) <- searchList ]
     -- Appending some extra xprompts to keybindings list.
     -- Look at "xprompt settings" section this of config for values for "k".
