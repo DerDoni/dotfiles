@@ -1,5 +1,4 @@
 --ignore-errors
---write-annotations
 --cookies cookies.txt
 
 --format ("bestvideo[width>=1920]"/bestvideo)+bestaudio/best
