@@ -51,7 +51,7 @@
       confirm-kill-emacs nil)
 
 (after! company
-  (setq company-idle-delay 0.1
+  (setq company-idle-delay 0.5
         company-minimum-prefix-length 2)
   (setq company-show-numbers t)
   (add-hook 'evil-normal-state-entry-hook #'company-abort)) ;; make aborting less
@@ -82,10 +82,20 @@
 (after! org
   (require 'org-bullets)  ; Nicer bullets in org-mode
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  ;; Auto save org-files, so that we prevent the locking problem between computers
+  (add-hook 'auto-save-hook 'org-save-all-org-buffers)
+  ;; Suppress output "Saving all Org buffers... done"
+ '(org-clock-mode-line-total (quote today))
+  (advice-add 'org-save-all-org-buffers :around #'suppress-messages)
+  :config
+  ;; Default org-mode startup
+  (setq org-startup-folded t
+        org-latex-preview-ltxpng-directory (expand-file-name "ltximg/" org-directory))
   (setq org-directory "~/org/"
         org-agenda-files '("~/org")
         org-default-notes-file (expand-file-name "notes.org" org-directory)
         org-ellipsis " ▼ "
+        org-my-anki-file (expand-file-name "anki.org" org-directory)
         org-log-done 'time
         org-journal-dir "~/org/journal/"
         org-journal-date-format "%B %d, %Y (%A)"
@@ -108,8 +118,6 @@
              "|"
              "DONE(d)"
              "CANCELLED(c)" ))))
-
-
 
 (use-package! notmuch
   :commands (notmuch)
@@ -167,10 +175,81 @@
     (notmuch-search-tag-all '("+deleted"))
     (+notmuch-archive-all)))
 
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
+(use-package! anki-editor
+  :commands (anki-editor-mode)
+  :init
+  (map! :leader
+      :desc "Anki Push tree"
+      "a p" #'anki-editor-push-tree)
+  :hook (org-capture-after-finalize . anki-editor-reset-cloze-number) ; Reset cloze-number after each capture.
+  :config
+  (setq anki-editor-create-decks t ;; Allow anki-editor to create a new deck if it doesn't exist
+        anki-editor-org-tags-as-anki-tags t)
+
+  (defun anki-editor-cloze-region-auto-incr (&optional arg)
+    "Cloze region without hint and increase card number."
+    (interactive)
+    (anki-editor-cloze-region my-anki-editor-cloze-number "")
+    (setq my-anki-editor-cloze-number (1+ my-anki-editor-cloze-number))
+    (forward-sexp))
+  (defun anki-editor-cloze-region-dont-incr (&optional arg)
+    "Cloze region without hint using the previous card number."
+    (interactive)
+    (anki-editor-cloze-region (1- my-anki-editor-cloze-number) "")
+    (forward-sexp))
+  (defun anki-editor-reset-cloze-number (&optional arg)
+    "Reset cloze number to ARG or 1"
+    (interactive)
+    (setq my-anki-editor-cloze-number (or arg 1)))
+  (defun anki-editor-push-tree ()
+    "Push all notes under a tree."
+    (interactive)
+    (anki-editor-push-notes '(4))
+    (anki-editor-reset-cloze-number))
+  ;; Initialize
+  (anki-editor-reset-cloze-number)
+  )
+
 (setq display-line-numbers-type t)
 
+;; Org-capture templates
+(setq org-my-anki-file "/home/vincenzo/org/anki.org")
+(after! org
+  (add-to-list 'org-capture-templates
+'("a" "Anki basic"
+               entry
+               (file+headline org-my-anki-file "Dispatch Shelf")
+               "* %<%H:%M>   %^g\n:PROPERTIES:\n:ANKI_NOTE_TYPE: Basic\n:ANKI_DECK: Mega\n:END:\n** Front\n%?\n** Back\n"))
+(add-to-list 'org-capture-templates
+             '("A" "Anki cloze"
+               entry
+               (file+headline org-my-anki-file "Dispatch Shelf")
+               "* %<%H:%M>   %^g\n:PROPERTIES:\n:ANKI_NOTE_TYPE: Cloze\n:ANKI_DECK: Mega\n:END:\n** Text\n%x\n** Extra\n")))
+
+;; Allow Emacs to access content from clipboard.
+(setq x-select-enable-clipboard t
+      x-select-enable-primary t)
+
+(defadvice org-capture-finalize 
+    (after delete-capture-frame activate)  
+  "Advise capture-finalize to close the frame"  
+  (if (equal "org-capture" (frame-parameter nil 'name))  
+      (delete-frame)))  
+
+(defadvice org-capture-destroy 
+    (after delete-capture-frame activate)  
+  "Advise capture-destroy to close the frame"  
+  (if (equal "org-capture" (frame-parameter nil 'name))  
+      (delete-frame)))  
+
+(defun make-orgcapture-frame ()
+    "Create a new frame and run org-capture."
+    (interactive)
+    (make-frame '((name . "org-capture") (window-system . x)))
+    (select-frame-by-name "org-capture")
+    (counsel-org-capture)
+    (delete-other-windows)
+    )
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one

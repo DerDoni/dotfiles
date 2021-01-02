@@ -54,3 +54,4 @@
 (package! dired-narrow)
 (package! all-the-icons-dired)
 (package! org-bullets)
+(package! anki-editor)
