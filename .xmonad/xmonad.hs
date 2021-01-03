@@ -390,14 +390,14 @@ myKeys =
         , ("M-m", spawn(myMediaPlayer))
         , ("M-r", spawn(myTerminal ++ " -e ranger"))
         , ("M-a", spawn("anki"))
-        , ("M-S-p", spawn("Discord"))
+        , ("M-S-p", spawn("passmenu -i"))
 	, ("M-S-a", spawn(myTerminal ++ " -e alsamixer"))
 	, ("M-s", spawn("flameshot gui"))
 
     -- Kill windows
         , ("M-q", kill1)                         -- Kill the currently focused client
     --    , ("M-S-a", killAll)                       -- Kill all windows on current workspace
-        , ("M-S-x", spawn("systemctl hibernate"))
+        , ("M-S-x", spawn("systemctl suspend"))
 
     -- Workspaces
         , ("M-.", nextWS)  -- Switch focus to next monitor
@@ -464,13 +464,11 @@ myKeys =
 
     -- Emacs (CTRL-e followed by a key)
         , ("C-e e", spawn "emacsclient -c -a 'emacs'")                            -- start emacs
+        , ("C-e c", spawn "emacsclient -n -e '(make-orgcapture-frame)'")
         , ("C-e b", spawn "emacsclient -c -a 'emacs' --eval '(ibuffer)'")         -- list emacs buffers
         , ("C-e d", spawn "emacsclient -c -a 'emacs' --eval '(dired nil)'")       -- dired emacs file manager
-        , ("C-e i", spawn "emacsclient -c -a 'emacs' --eval '(erc)'")             -- erc emacs irc client
         , ("C-e m", spawn "emacsclient -c -a 'emacs' --eval '(notmuch)'")            -- notmuch emacs email client
         , ("C-e v", spawn "emacsclient -c -a 'emacs' --eval '(+vterm/here nil)'") -- vterm within emacs
-        -- emms is an emacs audio player. I set it to auto start playing in a specific directory.
-        , ("C-e a", spawn "emacsclient -c -a 'emacs' --eval '(emms)' --eval '(emms-play-directory-tree \"~/Music/Non-Classical/70s-80s/\")'")
 
     -- Multimedia Keys
         , ("<XF86AudioPlay>", spawn (myTerminal ++ "mocp --play"))
