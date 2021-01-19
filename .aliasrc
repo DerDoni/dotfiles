@@ -27,7 +27,7 @@ alias kitc='systemctl start openvpn-uniVPN.service'
 
 # Nix
 alias uphome='home-manager switch -f ~/nix-config/home.nix'
-
+alias upnix='cd ~/nix-config/nixpkgs/ && git pull && cd ~/nix-config/home-manager/ && git pull && cd ~'
 # Server
 alias vps='ssh vincenzo@173.249.8.100'
 alias pi='ssh pi@pi'
