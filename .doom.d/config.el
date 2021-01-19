@@ -92,7 +92,7 @@
   (setq org-startup-folded t
         org-latex-preview-ltxpng-directory (expand-file-name "ltximg/" org-directory))
   (setq org-directory "~/org/"
-        org-agenda-files '("~/org")
+        org-agenda-files '("~/org/todo.org")
         org-default-notes-file (expand-file-name "notes.org" org-directory)
         org-ellipsis " ▼ "
         org-my-anki-file (expand-file-name "anki.org" org-directory)
