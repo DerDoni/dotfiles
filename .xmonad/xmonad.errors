@@ -1,0 +1,7 @@
+
+xmonad.hs:393:1: warning: [-Wtabs]
+    Tab character found here, and in one further location.
+    Please use spaces instead.
+    |
+393 |         , ("M-S-a", spawn(myTerminal ++ " -e alsamixer"))
+    | ^^^^^^^^
