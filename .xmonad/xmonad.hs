@@ -273,7 +273,6 @@ mySpacing' i = spacingRaw True (Border i i i i) True (Border i i i i) True
 tall     = renamed [Replace "tall"]
            $ windowNavigation
            $ addTabs shrinkText myTabTheme
-           $ subLayout [] (smartBorders Simplest)
            $ limitWindows 12
            $ mySpacing 8
            $ ResizableTall 1 (3/100) (1/2) []
@@ -340,7 +339,7 @@ myLayoutHook = avoidStruts $ mouseResize $ windowArrange $ T.toggleLayouts float
                                  ||| threeCol
                                  ||| threeRow
 
-myWorkspaces = [" dev ", " www ", " sys ", " study ", " doc ", " chat ", " mus ", " vid ", " srv "]
+myWorkspaces = [" dev ", " www ", " sys ", " study ", " doc ", " chat ", " mus ", " vid ", " invest "]
 -- myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 "]
 
 xmobarEscape :: String -> String
@@ -398,7 +397,7 @@ myKeys =
         , ("M-q", kill1)                         -- Kill the currently focused client
     --    , ("M-S-a", killAll)                       -- Kill all windows on current workspace
         , ("M-S-x", spawn("systemctl suspend"))
-
+        , ("M-C-x", spawn("systemctl poweroff"))
     -- Workspaces
         , ("M-.", nextWS)  -- Switch focus to next monitor
         , ("M-,", prevWS)  -- Switch focus to prev monitor
