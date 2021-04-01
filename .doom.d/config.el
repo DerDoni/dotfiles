@@ -102,6 +102,7 @@
         org-journal-file-format "%Y-%m-%d.org"
         org-hide-emphasis-markers t
         org-pomodoro-manual-break t
+        org-pomodoro-ticking-sound-p t
         ;; ex. of org-link-abbrev-alist in action
         ;; [[arch-wiki:Name_of_Page][Description]]
         org-link-abbrev-alist    ; This overwrites the default Doom org-link-abbrev-list
@@ -174,6 +175,15 @@
     (interactive)
     (notmuch-search-tag-all '("+deleted"))
     (+notmuch-archive-all)))
+
+(use-package! mathpix.el
+  :commands (mathpix-screenshot)
+  :init
+  (map! "C-x m" #'mathpix-screenshot)
+  :config
+  (setq mathpix-screenshot-method "flameshot gui -p %s"
+        mathpix-app-id (with-temp-buffer (insert-file-contents "./secrets/mathpix-app-id") (buffer-string))
+        mathpix-app-key (with-temp-buffer (insert-file-contents "./secrets/mathpix-app-key") (buffer-string))))
 
 (use-package! anki-editor
   :commands (anki-editor-mode)
