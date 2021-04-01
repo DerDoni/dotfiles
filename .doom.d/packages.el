@@ -55,3 +55,6 @@
 (package! all-the-icons-dired)
 (package! org-bullets)
 (package! anki-editor)
+(package! org-download)
+(package! mathpix.el
+  :recipe (:host github :repo "jethrokuan/mathpix.el"))
