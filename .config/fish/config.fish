@@ -18,7 +18,8 @@ set fish_color_command brcyan
 set fish_color_error '#ff6c6b'
 set fish_color_param brcyan
 
-
+# Jump integration
+status --is-interactive; and source (jump shell fish | psub)
 ### FUNCTIONS ###
 
 # The bindings for !! and !$
