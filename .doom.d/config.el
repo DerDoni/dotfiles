@@ -113,6 +113,7 @@
           '((sequence
              "TODO(t)"
              "RESEARCH(r)"
+             "NEXT(n)"
              "PROJ(p)"
              "WAIT(w)"
              "|"
@@ -201,11 +202,18 @@
       (make-directory dirname t)
       (expand-file-name filename dirname)))
   :config
-  (setq org-download-screenshot-method
-        (cond (IS-MAC "screencapture -i %s")
-              (IS-LINUX
-               (cond ((executable-find "maim")  "maim -u -s %s")
-                     ((executable-find "scrot") "scrot -s %s")))))
+  ;; org-attach method
+(setq-default org-attach-method 'mv
+              org-attach-auto-tag "attach"
+              org-attach-store-link-p 't)
+(setq-default org-download-method 'directory
+              org-download-image-dir "~/org/screenshots/"
+              org-download-heading-lvl nil
+              org-download-delete-image-after-download t
+              org-download-screenshot-method "flameshot gui --raw > %s"
+              org-download-image-org-width 300
+              org-download-annotate-function (lambda (link) "") ;; Don't annotate
+              )
   (setq org-download-method '+org/org-download-method))
 
 (use-package! mathpix.el
@@ -213,7 +221,7 @@
   :init
   (map! "C-x m" #'mathpix-screenshot)
   :config
-  (setq mathpix-screenshot-method "flameshot gui -p %s"
+  (setq mathpix-screenshot-method "flameshot gui -- raw > %s"
         mathpix-app-id (with-temp-buffer (insert-file-contents "./secrets/mathpix-app-id") (buffer-string))
         mathpix-app-key (with-temp-buffer (insert-file-contents "./secrets/mathpix-app-key") (buffer-string))))
 
