@@ -50,6 +50,15 @@
       display-line-numbers-type nil
       confirm-kill-emacs nil)
 
+(set-email-account! "Mailbox"
+  '((mu4e-sent-folder       . "/mailbox/Sent Mail")
+    (mu4e-drafts-folder     . "/mailbox/Drafts")
+    (mu4e-trash-folder      . "/mailbox/Trash")
+    (mu4e-refile-folder     . "/mailbox/All Mail")
+    (smtpmail-smtp-user     . "vincenzo.pace@mailbox.org")
+    (user-mail-address      . "vincenzo.pace@mailbox.org")    ;; only needed for mu < 1.4
+    (mu4e-compose-signature . "---\nVincenzo Pace"))
+  t)
 (after! company
   (setq company-idle-delay 0.5
         company-minimum-prefix-length 2)
@@ -60,7 +69,7 @@
 (setq-default prescient-history-length 1000)
 
 
-(setq doom-font (font-spec :family "Iosevka" :size 16)
+(setq doom-font (font-spec :family "Iosevka" :size 20)
       doom-variable-pitch-font (font-spec :family "Libre Baskerville")
       doom-serif-font (font-spec :family "Libre Baskerville"))
 
@@ -84,13 +93,11 @@
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
   ;; Auto save org-files, so that we prevent the locking problem between computers
   (add-hook 'auto-save-hook 'org-save-all-org-buffers)
-  ;; Suppress output "Saving all Org buffers... done"
  '(org-clock-mode-line-total (quote today))
-  (advice-add 'org-save-all-org-buffers :around #'suppress-messages)
   :config
   ;; Default org-mode startup
   (setq org-startup-folded t
-        org-latex-preview-ltxpng-directory (expand-file-name "ltximg/" org-directory))
+        org-preview-latex-directory (expand-file-name "ltximg/" org-directory))
   (setq org-directory "~/org/"
         org-agenda-files '("~/org/todo.org")
         org-default-notes-file (expand-file-name "notes.org" org-directory)
@@ -210,10 +217,28 @@
               org-download-image-dir "~/org/screenshots/"
               org-download-heading-lvl nil
               org-download-delete-image-after-download t
-              org-download-screenshot-method "flameshot gui --raw > %s"
+              ;;org-download-screenshot-method "flameshot gui --raw > %s"
               org-download-image-org-width 300
               org-download-annotate-function (lambda (link) "") ;; Don't annotate
               )
+:config
+  (defun +org/org-download-method (link)
+    (let* ((filename
+            (file-name-nondirectory
+             (car (url-path-and-query
+                   (url-generic-parse-url link)))))
+           ;; Create folder name with current buffer name, and place in root dir
+           (dirname (concat "./images/"
+                            (replace-regexp-in-string " " "_"
+                                                      (downcase (file-name-base buffer-file-name))))))
+      (make-directory dirname t)
+      (expand-file-name filename dirname)))
+:config
+(setq org-download-screenshot-method
+        (cond (IS-MAC "screencapture -i %s")
+              (IS-LINUX
+               (cond ((executable-find "maim")  "maim -u -s %s")
+                     ((executable-find "scrot") "scrot -s %s")))))
   (setq org-download-method '+org/org-download-method))
 
 (use-package! mathpix.el
@@ -221,7 +246,7 @@
   :init
   (map! "C-x m" #'mathpix-screenshot)
   :config
-  (setq mathpix-screenshot-method "flameshot gui -- raw > %s"
+  (setq ;;mathpix-screenshot-method "flameshot -p %s"
         mathpix-app-id (with-temp-buffer (insert-file-contents "./secrets/mathpix-app-id") (buffer-string))
         mathpix-app-key (with-temp-buffer (insert-file-contents "./secrets/mathpix-app-key") (buffer-string))))
 
@@ -277,20 +302,20 @@
                "* %<%H:%M>   %^g\n:PROPERTIES:\n:ANKI_NOTE_TYPE: Cloze\n:ANKI_DECK: Mega\n:END:\n** Text\n%x\n** Extra\n")))
 
 ;; Allow Emacs to access content from clipboard.
-(setq x-select-enable-clipboard t
-      x-select-enable-primary t)
+(setq select-enable-clipboard t
+      select-enable-primary t)
 
-(defadvice org-capture-finalize 
-    (after delete-capture-frame activate)  
-  "Advise capture-finalize to close the frame"  
-  (if (equal "org-capture" (frame-parameter nil 'name))  
-      (delete-frame)))  
+(defadvice org-capture-finalize
+    (after delete-capture-frame activate)
+  "Advise capture-finalize to close the frame"
+  (if (equal "org-capture" (frame-parameter nil 'name))
+      (delete-frame)))
 
-(defadvice org-capture-destroy 
-    (after delete-capture-frame activate)  
-  "Advise capture-destroy to close the frame"  
-  (if (equal "org-capture" (frame-parameter nil 'name))  
-      (delete-frame)))  
+(defadvice org-capture-destroy
+    (after delete-capture-frame activate)
+  "Advise capture-destroy to close the frame"
+  (if (equal "org-capture" (frame-parameter nil 'name))
+      (delete-frame)))
 
 (defun make-orgcapture-frame ()
     "Create a new frame and run org-capture."
