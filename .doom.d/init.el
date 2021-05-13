@@ -88,7 +88,7 @@
        ;;debugger          ; FIXME stepping through code, to help you add bugs
        ;;direnv
        ;;docker
-       ;;editorconfig      ; let someone else argue about tabs vs spaces
+       editorconfig      ; let someone else argue about tabs vs spaces
        ;;ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
@@ -149,6 +149,7 @@
        ;;ocaml             ; an objective camel
        (org               ; organize your plain life in plain text
         +pretty
+        +present
         +pomodoro)
        ;;php               ; perl's insecure younger brother
        plantuml          ; diagrams for confusing people more
