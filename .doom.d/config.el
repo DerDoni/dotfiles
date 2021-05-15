@@ -59,6 +59,7 @@
     (user-mail-address      . "vincenzo.pace@mailbox.org")    ;; only needed for mu < 1.4
     (mu4e-compose-signature . "---\nVincenzo Pace"))
   t)
+
 (after! company
   (setq company-idle-delay 0.5
         company-minimum-prefix-length 2)
@@ -90,6 +91,7 @@
 ;; change `org-directory'. It must be set before org loads!
 (after! org
   (require 'org-bullets)  ; Nicer bullets in org-mode
+  (require 'org-habit)
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
   ;; Auto save org-files, so that we prevent the locking problem between computers
   (add-hook 'auto-save-hook 'org-save-all-org-buffers)
@@ -99,6 +101,7 @@
   (setq org-startup-folded t
         org-preview-latex-directory (expand-file-name "ltximg/" org-directory))
   (setq org-directory "~/org/"
+        org-habit-show-habits t
         org-agenda-files '("~/org/todo.org" "~/org/habits.org")
         org-default-notes-file (expand-file-name "notes.org" org-directory)
         org-ellipsis " ▼ "
