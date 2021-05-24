@@ -221,10 +221,8 @@ tall     = renamed [Replace "tall"]
            $ ResizableTall 1 (3/100) (1/2) []
 floats   = renamed [Replace "floats"]
            $ windowNavigation
-           $ subLayout [] (smartBorders Simplest)
            $ limitWindows 20 simplestFloat
 grid     = renamed [Replace "grid"]
-           $ smartBorders
            $ limitWindows 12
            $ mySpacing 8
            $ mkToggle (single MIRROR)
