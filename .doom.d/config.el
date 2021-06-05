@@ -9,46 +9,13 @@
       :desc "Save current bookmarks to bookmark file"
       "b w" #'bookmark-save)
 
-
-(map! :leader
-      :desc "Dired"
-      "d d" #'dired
-      :leader
-      :desc "Dired jump to current"
-      "d j" #'dired-jump
-      (:after dired
-        (:map dired-mode-map
-         :leader
-         :desc "Peep-dired image previews"
-         "d p" #'peep-dired
-         :leader
-         :desc "Dired view file"
-         "d v" #'dired-view-file)))
-;; Make 'h' and 'l' go back and forward in dired. Much faster to navigate the directory structure!
-(evil-define-key 'normal dired-mode-map
-  (kbd "h") 'dired-up-directory
-  (kbd "l") 'dired-open-file) ; use dired-find-file instead if not using dired-open package
-;; If peep-dired is enabled, you will get image previews as you go up/down with 'j' and 'k'
-(evil-define-key 'normal peep-dired-mode-map
-  (kbd "j") 'peep-dired-next-file
-  (kbd "k") 'peep-dired-prev-file)
-(add-hook 'peep-dired-hook 'evil-normalize-keymaps)
-;; Get file icons in dired
-(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
-;; With dired-open plugin, you can launch external programs for certain extensions
-;; For example, I set all .png files to open in 'sxiv' and all .mp4 files to open in 'mpv'
-(setq dired-open-extensions '(("gif" . "sxiv")
-                              ("jpg" . "sxiv")
-                              ("png" . "sxiv")
-                              ("mkv" . "mpv")
-                              ("mp4" . "mpv")))
-
-
-
 (setq user-full-name "Vincenzo Pace"
       user-mail-address "vincenzo.pace@mailbox.org"
-      display-line-numbers-type nil
+      display-line-numbers-type t
       confirm-kill-emacs nil)
+
+
+(setq doom-font (font-spec :family "Iosevka" :size 20))
 
 (set-email-account! "Mailbox"
   '((mu4e-sent-folder       . "/mailbox/Sent Mail")
@@ -70,11 +37,6 @@
 (setq-default prescient-history-length 1000)
 
 
-(setq doom-font (font-spec :family "Iosevka" :size 20)
-      doom-variable-pitch-font (font-spec :family "Libre Baskerville")
-      doom-serif-font (font-spec :family "Libre Baskerville"))
-
-
 (after! doom-themes
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t))
@@ -92,7 +54,7 @@
 (after! org
   (require 'org-bullets)  ; Nicer bullets in org-mode
   (require 'org-habit)
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+;;  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
   ;; Auto save org-files, so that we prevent the locking problem between computers
   (add-hook 'auto-save-hook 'org-save-all-org-buffers)
  '(org-clock-mode-line-total (quote today))
@@ -102,7 +64,7 @@
         org-preview-latex-directory (expand-file-name "ltximg/" org-directory))
   (setq org-directory "~/org/"
         org-habit-show-habits t
-        org-agenda-files '("~/org/todo.org" "~/org/habits.org")
+        org-agenda-files '("~/org/todo.org" "~/org/habits.org" "~/org/journal" "~/org/journal.org")
         org-default-notes-file (expand-file-name "notes.org" org-directory)
         org-ellipsis " ▼ "
         org-my-anki-file (expand-file-name "anki.org" org-directory)
@@ -114,12 +76,7 @@
         org-pomodoro-manual-break t
         ;; ex. of org-link-abbrev-alist in action
         ;; [[arch-wiki:Name_of_Page][Description]]
-        org-link-abbrev-alist    ; This overwrites the default Doom org-link-abbrev-list
-          '(("google" . "http://www.google.com/search?q=")
-            ("arch-wiki" . "https://wiki.archlinux.org/index.php/")
-            ("ddg" . "https://duckduckgo.com/?q=")
-            ("wiki" . "https://en.wikipedia.org/wiki/"))
-        org-todo-keywords        ; This overwrites the default Doom org-todo-keywords
+       org-todo-keywords        ; This overwrites the default Doom org-todo-keywords
           '((sequence
              "TODO(t)"
              "RESEARCH(r)"
@@ -130,61 +87,6 @@
              "DONE(d)"
              "CANCELLED(c)" ))))
 
-(use-package! notmuch
-  :commands (notmuch)
-  :init
-  (map! :map notmuch-search-mode-map
-        :desc "toggle read" "t" #'+notmuch/toggle-read
-        :desc "Reply to thread" "r" #'notmuch-search-reply-to-thread
-        :desc "Reply to thread sender" "R" #'notmuch-search-reply-to-thread-sender
-        :desc "Filter" "/" #'notmuch-search-filter
-        :desc "Archive All" "A" #'+notmuch-archive-all
-        :desc "Delete All" "D" #'+notmuch-delete-all)
-  (map! :map notmuch-show-mode-map
-        :desc "Next link" "<tab>" #'org-next-link
-        :desc "Previous link" "<backtab>" #'org-previous-link
-        :desc "URL at point" "C-<return>" #'browse-url-at-point)
-  (defun +notmuch/toggle-read ()
-    "toggle read status of message"
-    (interactive)
-    (if (member "unread" (notmuch-search-get-tags))
-        (notmuch-search-tag (list "-unread"))
-      (notmuch-search-tag (list "+unread"))))
-  :config
-  (setq message-auto-save-directory "~/.mail/drafts/"
-        message-send-mail-function 'message-send-mail-with-sendmail
-        sendmail-program (executable-find "msmtp")
-        message-sendmail-envelope-from 'header
-        mail-envelope-from 'header
-        mail-specify-envelope-from t
-        message-sendmail-f-is-evil nil
-        message-kill-buffer-on-exit t
-        notmuch-always-prompt-for-sender t
-        notmuch-archive-tags '("-unread")
-        notmuch-crypto-process-mime t
-        notmuch-hello-sections '(notmuch-hello-insert-saved-searches)
-        notmuch-labeler-hide-known-labels t
-        notmuch-search-oldest-first nil
-        notmuch-archive-tags '("-inbox" "-unread")
-        notmuch-message-headers '("To" "Cc" "Subject" "Bcc")
-        notmuch-saved-searches '((:name "inbox" :query "tag:inbox")
-                                 (:name "unread" :query "tag:inbox and tag:unread")
-                                 (:name "to-me" :query "tag:inbox and tag:to-me")
-                                 (:name "personal" :query "tag:inbox and tag:personal")
-                                 (:name "drafts" :query "tag:draft")))
-
-  (defun +notmuch-archive-all ()
-    "Archive all the emails in the current view."
-    (interactive)
-    (notmuch-search-archive-thread nil (point-min) (point-max)))
-
-
-  (defun +notmuch-delete-all ()
-    "Archive all the emails in the current view.
-    Mark them for deletion by cron job."
-    (interactive)
-    (notmuch-search-tag-all '("+deleted"))
-    (+notmuch-archive-all)))
 (use-package! org-download
   :commands
   org-download-dnd
@@ -288,7 +190,6 @@
   (anki-editor-reset-cloze-number)
   )
 
-(setq display-line-numbers-type t)
 
 ;; Org-capture templates
 (setq org-my-anki-file "/home/vincenzo/org/anki.org")
