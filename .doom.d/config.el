@@ -64,7 +64,7 @@
         org-preview-latex-directory (expand-file-name "ltximg/" org-directory))
   (setq org-directory "~/org/"
         org-habit-show-habits t
-        org-agenda-files '("~/org/todo.org" "~/org/habits.org" "~/org/journal" "~/org/journal.org")
+        org-agenda-files '("~/org/todo.org" "~/org/habits.org" )
         org-default-notes-file (expand-file-name "notes.org" org-directory)
         org-ellipsis " ▼ "
         org-my-anki-file (expand-file-name "anki.org" org-directory)
