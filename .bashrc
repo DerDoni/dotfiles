@@ -17,5 +17,4 @@ rga-fzf() {
 	xdg-open "$file"
 }
 
-source ~/.aliasrc
 eval "$(starship init bash)"
