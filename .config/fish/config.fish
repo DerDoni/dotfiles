@@ -54,5 +54,4 @@ end
 
 
 ### LOAD AT THE END ###
-source $HOME/.aliasrc
 starship init fish | source
