@@ -48,7 +48,8 @@
 ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
-
+(package! haskell-mode)
+(package! lsp-haskell)
 (package! deadgrep)
 (package! org-clock-convenience)
 (package! dired-narrow)
