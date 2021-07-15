@@ -74,8 +74,6 @@
         org-journal-file-format "%Y-%m-%d.org"
         org-hide-emphasis-markers t
         org-pomodoro-manual-break t
-        ;; ex. of org-link-abbrev-alist in action
-        ;; [[arch-wiki:Name_of_Page][Description]]
        org-todo-keywords        ; This overwrites the default Doom org-todo-keywords
           '((sequence
              "TODO(t)"
@@ -164,7 +162,8 @@
   :hook (org-capture-after-finalize . anki-editor-reset-cloze-number) ; Reset cloze-number after each capture.
   :config
   (setq anki-editor-create-decks t ;; Allow anki-editor to create a new deck if it doesn't exist
-        anki-editor-org-tags-as-anki-tags t)
+        anki-editor-org-tags-as-anki-tags t
+        anki-editor-break-consecutive-braces-in-latex t)
 
   (defun anki-editor-cloze-region-auto-incr (&optional arg)
     "Cloze region without hint and increase card number."
