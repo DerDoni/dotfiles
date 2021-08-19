@@ -1,6 +1,7 @@
 # Formatting
 add_newline = false
 
+command_timeout = 5000
 [line_break]
 disabled = true
  

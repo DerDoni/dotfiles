@@ -4,6 +4,7 @@ set TERM "xterm-256color"              # Sets the terminal type
 set EDITOR "emacsclient -t -a ''"      # $EDITOR use Emacs in terminal
 set VISUAL "emacsclient -c -a emacs"   # $VISUAL use Emacs in GUI mode
 
+
 ### SET EITHER DEFAULT EMACS MODE OR VI MODE ###
 function fish_user_key_bindings
   # fish_default_key_bindings
