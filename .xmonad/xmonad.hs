@@ -77,7 +77,7 @@ myTerminal :: String
 myTerminal = "alacritty"   -- Sets default terminal
 
 myBrowser :: String
-myBrowser = "brave"
+myBrowser = "firefox"
 
 myMediaPlayer :: String
 myMediaPlayer = "spotify"

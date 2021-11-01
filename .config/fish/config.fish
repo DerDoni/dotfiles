@@ -56,3 +56,4 @@ end
 
 ### LOAD AT THE END ###
 starship init fish | source
+direnv hook fish | source

@@ -11,9 +11,17 @@
 
 (setq user-full-name "Vincenzo Pace"
       user-mail-address "vincenzo.pace@mailbox.org"
-      display-line-numbers-type t
+      display-line-numbers-type 'relative
       confirm-kill-emacs nil)
 
+(setq undo-limit 80000000                         ; Raise undo-limit to 80Mb
+      evil-want-fine-undo t                       ; By default while in insert all changes are one big blob. Be more granular
+      auto-save-default t                         ; Nobody likes to loose work, I certainly don't
+      truncate-string-ellipsis "…"                ; Unicode ellispis are nicer than "...", and also save /precious/ space
+      password-cache-expiry nil)                   ; I can trust my computers ... can't I?
+(global-subword-mode 1)                           ; Iterate through CamelCase words
+(setq-default major-mode 'org-mode)
+(display-time-mode 1)
 
 (setq doom-font (font-spec :family "Iosevka" :size 20))
 
@@ -23,14 +31,20 @@
     (mu4e-trash-folder      . "/mailbox/Trash")
     (mu4e-refile-folder     . "/mailbox/All Mail")
     (smtpmail-smtp-user     . "vincenzo.pace@mailbox.org")
-    (user-mail-address      . "vincenzo.pace@mailbox.org")    ;; only needed for mu < 1.4
     (mu4e-compose-signature . "---\nVincenzo Pace"))
   t)
 
+(setq mu4e-update-interval 300
+      mu4e-get-mail-command "mbsync -a"
+      message-send-mail-function 'smtpmail-send-it
+      starttls-use-gtnutls t
+      smtpmail-starttls-credentials '(("smtp.1and1.com" 587 nil nil)))
+
+
 (after! company
-  (setq company-idle-delay 0.5
-        company-minimum-prefix-length 2)
-  (setq company-show-numbers t)
+  (setq company-idle-delay 0.2
+        company-minimum-prefix-length 2
+        company-show-quick-access t)
   (add-hook 'evil-normal-state-entry-hook #'company-abort)) ;; make aborting less
 
 (setq-default history-length 1000)
@@ -144,21 +158,12 @@
                      ((executable-find "scrot") "scrot -s %s")))))
   (setq org-download-method '+org/org-download-method))
 
-(use-package! mathpix.el
-  :commands (mathpix-screenshot)
-  :init
-  (map! "C-x m" #'mathpix-screenshot)
-  :config
-  (setq ;;mathpix-screenshot-method "flameshot -p %s"
-        mathpix-app-id (with-temp-buffer (insert-file-contents "./secrets/mathpix-app-id") (buffer-string))
-        mathpix-app-key (with-temp-buffer (insert-file-contents "./secrets/mathpix-app-key") (buffer-string))))
-
 (use-package! anki-editor
   :commands (anki-editor-mode)
   :init
   (map! :leader
       :desc "Anki Push tree"
-      "a p" #'anki-editor-push-tree)
+      "m a p" #'anki-editor-push-tree)
   :hook (org-capture-after-finalize . anki-editor-reset-cloze-number) ; Reset cloze-number after each capture.
   :config
   (setq anki-editor-create-decks t ;; Allow anki-editor to create a new deck if it doesn't exist
