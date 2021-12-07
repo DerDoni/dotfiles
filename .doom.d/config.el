@@ -1,82 +1,92 @@
-;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
-
-;; Place your private configuration here! Remember, you do not need to run 'doom
-;; sync' after modifying this file!
-(map! :leader
-      :desc "List bookmarks"
-      "b L" #'list-bookmarks
-      :leader
-      :desc "Save current bookmarks to bookmark file"
-      "b w" #'bookmark-save)
-
+;; [[file:config.org::*Defaults][Defaults:1]]
 (setq user-full-name "Vincenzo Pace"
-      user-mail-address "vincenzo.pace@mailbox.org"
-      display-line-numbers-type 'relative
-      confirm-kill-emacs nil)
+      user-mail-address "vincenzo.pace@mailbox.org")
 
-(setq undo-limit 80000000                         ; Raise undo-limit to 80Mb
-      evil-want-fine-undo t                       ; By default while in insert all changes are one big blob. Be more granular
-      auto-save-default t                         ; Nobody likes to loose work, I certainly don't
-      truncate-string-ellipsis "…"                ; Unicode ellispis are nicer than "...", and also save /precious/ space
-      password-cache-expiry nil)                   ; I can trust my computers ... can't I?
-(global-subword-mode 1)                           ; Iterate through CamelCase words
-(setq-default major-mode 'org-mode)
+(setq-default
+      delete-by-moving-to-trash t
+      window-combination-resize t
+      x-stretch-cursor t
+      major-mode 'org-mode
+      history-length 1000
+      prescient-history-length 1000)
+
+(setq undo-limit 800000000
+      evil-want-fine-undo t
+      truncate-string-ellipsis "…"
+      password-cache-expiry nil
+      doom-fallback-buffer-name "► Doom"
+      +doom-dashboard-name "► Doom")
+
 (display-time-mode 1)
 
-(setq doom-font (font-spec :family "Iosevka" :size 20))
+(global-subword-mode 1)
+;; Defaults:1 ends here
 
-(set-email-account! "Mailbox"
-  '((mu4e-sent-folder       . "/mailbox/Sent Mail")
-    (mu4e-drafts-folder     . "/mailbox/Drafts")
-    (mu4e-trash-folder      . "/mailbox/Trash")
-    (mu4e-refile-folder     . "/mailbox/All Mail")
-    (smtpmail-smtp-user     . "vincenzo.pace@mailbox.org")
-    (mu4e-compose-signature . "---\nVincenzo Pace"))
-  t)
-
-(setq mu4e-update-interval 300
-      mu4e-get-mail-command "mbsync -a"
-      message-send-mail-function 'smtpmail-send-it
-      starttls-use-gtnutls t
-      smtpmail-starttls-credentials '(("smtp.1and1.com" 587 nil nil)))
-
-
+;; [[file:config.org::*Company][Company:1]]
 (after! company
   (setq company-idle-delay 0.2
         company-minimum-prefix-length 2
         company-show-quick-access t)
   (add-hook 'evil-normal-state-entry-hook #'company-abort)) ;; make aborting less
+;; Company:1 ends here
 
-(setq-default history-length 1000)
-(setq-default prescient-history-length 1000)
-
+;; [[file:config.org::*Theming][Theming:1]]
+(setq doom-theme 'doom-one)
+(remove-hook 'window-setup-hook #'doom-init-theme-h)
+(add-hook 'after-init-hook #'doom-init-theme-h 'append)
+(delq! t custom-theme-load-path)
 
 (after! doom-themes
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t))
-(custom-set-faces!
-  '(font-lock-comment-face :slant italic)
-  '(font-lock-keyword-face :slant italic))
 
-;; There are two ways to load a theme. Both assume the theme is installed and
-;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
 
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
+(setq display-line-numbers-type 'relative
+      confirm-kill-emacs nil)
+;; Theming:1 ends here
+
+;; [[file:config.org::*Modeline][Modeline:1]]
+(defun doom-modeline-conditional-buffer-encoding ()
+  "We expect the encoding to be LF UTF-8, so only show the modeline when this is not the case"
+  (setq-local doom-modeline-buffer-encoding
+              (unless (and (memq (plist-get (coding-system-plist buffer-file-coding-system) :category)
+                                 '(coding-category-undecided coding-category-utf-8))
+                           (not (memq (coding-system-eol-type buffer-file-coding-system) '(1 2))))
+                t)))
+
+(add-hook 'after-change-major-mode-hook #'doom-modeline-conditional-buffer-encoding)
+;; Modeline:1 ends here
+
+;; [[file:config.org::*Windows][Windows:1]]
+(setq evil-vsplit-window-right t
+      evil-split-window-below t)
+
+(defadvice! prompt-for-buffer (&rest _)
+  :after '(evil-window-split evil-window-vsplit)
+  (consult-buffer))
+
+(map! :map evil-window-map
+      "SPC" #'rotate-layout
+      ;; Navigation
+      "<left>"     #'evil-window-left
+      "<down>"     #'evil-window-down
+      "<up>"       #'evil-window-up
+      "<right>"    #'evil-window-right
+      ;; Swapping windows
+      "C-<left>"       #'+evil/window-move-left
+      "C-<down>"       #'+evil/window-move-down
+      "C-<up>"         #'+evil/window-move-up
+      "C-<right>"      #'+evil/window-move-right)
+;; Windows:1 ends here
+
+;; [[file:config.org::*General Settings][General Settings:1]]
+(setq org-directory "~/org/")
 (after! org
-  (require 'org-bullets)  ; Nicer bullets in org-mode
+  (require 'org-bullets)
   (require 'org-habit)
-;;  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-  ;; Auto save org-files, so that we prevent the locking problem between computers
-  (add-hook 'auto-save-hook 'org-save-all-org-buffers)
- '(org-clock-mode-line-total (quote today))
   :config
-  ;; Default org-mode startup
   (setq org-startup-folded t
-        org-preview-latex-directory (expand-file-name "ltximg/" org-directory))
-  (setq org-directory "~/org/"
+        org-preview-latex-directory (expand-file-name "ltximg/" org-directory)
         org-habit-show-habits t
         org-agenda-files '("~/org/todo.org" "~/org/habits.org" )
         org-default-notes-file (expand-file-name "notes.org" org-directory)
@@ -87,18 +97,11 @@
         org-journal-date-format "%B %d, %Y (%A)"
         org-journal-file-format "%Y-%m-%d.org"
         org-hide-emphasis-markers t
-        org-pomodoro-manual-break t
-       org-todo-keywords        ; This overwrites the default Doom org-todo-keywords
-          '((sequence
-             "TODO(t)"
-             "RESEARCH(r)"
-             "NEXT(n)"
-             "PROJ(p)"
-             "WAIT(w)"
-             "|"
-             "DONE(d)"
-             "CANCELLED(c)" ))))
+        org-pomodoro-manual-break t)
+  )
+;; General Settings:1 ends here
 
+;; [[file:config.org::*Org Download][Org Download:1]]
 (use-package! org-download
   :commands
   org-download-dnd
@@ -134,7 +137,7 @@
               org-download-image-dir "~/org/screenshots/"
               org-download-heading-lvl nil
               org-download-delete-image-after-download t
-              ;;org-download-screenshot-method "flameshot gui --raw > %s"
+              org-download-screenshot-method "flameshot gui --raw > %s"
               org-download-image-org-width 300
               org-download-annotate-function (lambda (link) "") ;; Don't annotate
               )
@@ -157,7 +160,9 @@
                (cond ((executable-find "maim")  "maim -u -s %s")
                      ((executable-find "scrot") "scrot -s %s")))))
   (setq org-download-method '+org/org-download-method))
+;; Org Download:1 ends here
 
+;; [[file:config.org::*Org Capture][Org Capture:1]]
 (use-package! anki-editor
   :commands (anki-editor-mode)
   :init
@@ -198,16 +203,21 @@
 ;; Org-capture templates
 (setq org-my-anki-file "/home/vincenzo/org/anki.org")
 (after! org
-  (add-to-list 'org-capture-templates
-'("a" "Anki basic"
+    (add-to-list 'org-capture-templates
+    '("a" "Anki basic"
                entry
                (file+headline org-my-anki-file "Dispatch Shelf")
                "* %<%H:%M>   %^g\n:PROPERTIES:\n:ANKI_NOTE_TYPE: Basic\n:ANKI_DECK: Mega\n:END:\n** Front\n%?\n** Back\n"))
-(add-to-list 'org-capture-templates
+    (add-to-list 'org-capture-templates
              '("A" "Anki cloze"
                entry
                (file+headline org-my-anki-file "Dispatch Shelf")
-               "* %<%H:%M>   %^g\n:PROPERTIES:\n:ANKI_NOTE_TYPE: Cloze\n:ANKI_DECK: Mega\n:END:\n** Text\n%x\n** Extra\n")))
+               "* %<%H:%M>   %^g\n:PROPERTIES:\n:ANKI_NOTE_TYPE: Cloze\n:ANKI_DECK: Mega\n:END:\n** Text\n%x\n** Extra\n"))
+    (add-to-list 'org-capture-templates
+                '("r" "Reading List"
+                  entry
+                  (file+datetree "~/org/reading_list.org")
+                   "* %?\nEntered on %U\n  %i\n  %a")))
 
 ;; Allow Emacs to access content from clipboard.
 (setq select-enable-clipboard t
@@ -233,19 +243,15 @@
     (counsel-org-capture)
     (delete-other-windows)
     )
-;; Here are some additional functions/macros that could help you configure Doom:
-;;
-;; - `load!' for loading external *.el files relative to this one
-;; - `use-package!' for configuring packages
-;; - `after!' for running code after a package has loaded
-;; - `add-load-path!' for adding directories to the `load-path', relative to
-;;   this file. Emacs searches the `load-path' when you load packages with
-;;   `require' or `use-package'.
-;; - `map!' for binding new keys
-;;
-;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-;; This will open documentation for it, including demos of how they are used.
-;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-;; they are implemented.
+;; Org Capture:1 ends here
+
+;; [[file:config.org::*Mathpix][Mathpix:1]]
+(use-package! mathpix.el
+  :commands (mathpix-screenshot)
+  :init
+  (map! "C-x m" #'mathpix-screenshot)
+  :config
+  (setq mathpix-screenshot-method "xfce4-screenshooter -r -o cat > %s"
+        mathpix-app-id (with-temp-buffer (insert-file-contents "./secrets/mathpix-app-id") (buffer-string))
+        mathpix-app-key (with-temp-buffer (insert-file-contents "./secrets/mathpix-app-key") (buffer-string))))
+;; Mathpix:1 ends here
