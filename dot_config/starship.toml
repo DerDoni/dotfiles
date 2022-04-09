@@ -1,0 +1,36 @@
+# Formatting
+add_newline = false
+
+command_timeout = 5000
+[line_break]
+disabled = true
+ 
+# Information
+[username]
+style_user = "bold dimmed blue"
+show_always = false
+
+[hostname]
+ssh_only = false
+format = "<[$hostname]($style)>"
+trim_at = "-"
+style = "bold dimmed white"
+disabled = true
+
+[directory]
+truncation_length = 10
+truncate_to_repo = true # truncates directory to root folder if in github repo
+style = "bold italic #87A752"
+
+# Packages
+[python]
+format = "[$symbol$version]($style) "
+style = "bold green"
+
+[package]
+disabled = true
+
+
+
+
+
