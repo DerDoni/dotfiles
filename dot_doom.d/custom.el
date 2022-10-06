@@ -7,6 +7,7 @@
    '("https://this-week-in-rust.org/rss.xml"
      ("http://feeds.bbci.co.uk/news/rss.xml" news tops)
      ("https://this-week-in-rust.org/rss.xml" programming rust)))
+ '(package-selected-packages '(conda nov pdf-tools))
  '(smtpmail-smtp-server "smtp.mailbox.org")
  '(smtpmail-smtp-service 25)
  '(warning-suppress-types '(((undo discard-info)) ((undo discard-info)))))

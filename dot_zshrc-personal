@@ -19,5 +19,12 @@ setxkbmap -option eurosign:e
 setxkbmap -layout us,de
 setxkbmap -option grp:alt_shift_toggle
 
-xset r rate 220 40
+xset r rate 190 40
 
+alias ccstudio=~/ti/ccs1110/ccs/eclipse/eclipse
+alias vim=lvim
+alias v=lvim
+alias e=lvim
+alias redon="systemctl --user start redshift.service"
+alias redoff="systemctl --user stop redshift.service"
+eval "$(starship init zsh)"

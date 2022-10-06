@@ -49,7 +49,7 @@ ZSH_THEME="powerline"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+ ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # COMPLETION_WAITING_DOTS="true"
@@ -75,7 +75,7 @@ ZSH_THEME="powerline"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git colored-man-pages docker-compose fd rust vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -112,10 +112,10 @@ unsetopt SHARE_HISTORY
 
 export HISTCONTROL=ignoreboth:erasedups
 
-# Make nano the default editor
+# Make nvim the default editor
 
-export EDITOR='vim'
-export VISUAL='vim'
+export EDITOR='nvim'
+export VISUAL='nvim'
 
 #PS1='[\u@\h \W]\$ '
 
@@ -410,4 +410,20 @@ neofetch
 #cpufetch
 #colorscript random
 
+
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+#__conda_setup="$('/home/vincenzo/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+#if [ $? -eq 0 ]; then
+#    eval "$__conda_setup"
+#else
+#    if [ -f "/home/vincenzo/anaconda3/etc/profile.d/conda.sh" ]; then
+#        . "/home/vincenzo/anaconda3/etc/profile.d/conda.sh"
+#    else
+#        export PATH="/home/vincenzo/anaconda3/bin:$PATH"
+#    fi
+#fi
+#unset __conda_setup
+# <<< conda initialize <<<
 

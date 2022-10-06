@@ -17,6 +17,7 @@ import XMonad.Actions.WindowGo (runOrRaise)
 import XMonad.Actions.WithAll (killAll, sinkAll)
 import XMonad.Hooks.DynamicLog (PP (..), dynamicLogWithPP, shorten, wrap, xmobarColor, xmobarPP)
 import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.WindowSwallowing
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.ManageDocks (ToggleStruts (..), avoidStruts, docksEventHook, manageDocks)
 import XMonad.Hooks.ManageHelpers (doFullFloat, isFullscreen)
@@ -66,10 +67,10 @@ myBrowser :: String
 myBrowser = "firefox-developer-edition"
 
 myMediaPlayer :: String
-myMediaPlayer = "spotify"
+myMediaPlayer = "ncmpcpp"
 
 myEditor :: String
-myEditor = "emacs"
+myEditor = "lvim"
 
 myBorderWidth :: Dimension
 myBorderWidth = 4 -- Sets border width for windows
@@ -298,14 +299,18 @@ myKeys =
     -- Useful programs to have a keybinding for launch
     ("M-<Return>", spawn (myTerminal)),
     ("M-w", spawn myBrowser),
+    ("M-e", spawn (myTerminal ++ " -e lvim")),
     ("M-S-h", spawn (myTerminal ++ " -e htop")),
-    ("M-m", spawn (myMediaPlayer)),
+    ("M-m", spawn (myTerminal ++ " -e ncmpcpp")),
     ("M-S-m", spawn ("mailspring")),
     ("M-r", spawn (myTerminal ++ " -e ranger")),
     ("M-a", spawn ("anki")),
     ("M-S-p", spawn ("passmenu -i")),
     ("M-S-a", spawn (myTerminal ++ " -e alsamixer")),
     ("M-s", spawn ("flameshot gui")),
+    ("M-S-s", spawn ("flameshot gui --raw | tesseract stdin stdout | xclip -in -selection clipboard")),
+    ("M-z", spawn ("zotero")),
+
     -- Kill windows
     ("M-q", kill1), -- Kill the currently focused client
     ("M-S-x", spawn ("systemctl suspend")),
