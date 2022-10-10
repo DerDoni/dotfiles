@@ -51,8 +51,6 @@
 
 (package! deadgrep)
 (package! org-clock-convenience)
-(package! dired-narrow)
-(package! all-the-icons-dired)
 (package! org-bullets)
 (package! anki-editor)
 (package! org-download)
