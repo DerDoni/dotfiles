@@ -426,4 +426,3 @@ alias personal='cp -Rf /personal/* ~'
 #fi
 #unset __conda_setup
 # <<< conda initialize <<<
-

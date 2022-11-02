@@ -17,6 +17,16 @@
       doom-fallback-buffer-name "► Doom"
       +doom-dashboard-name "► Doom")
 (display-time-mode 1)
+(display-battery-mode t)
+
+(+global-word-wrap-mode +1)
+(setq evil-vsplit-window-right t
+      evil-split-window-below t)
+
+
+(defadvice! prompt-for-buffer (&rest _)
+  :after '(evil-window-split evil-window-vsplit)
+  (consult-buffer))
 ;; Defaults:1 ends here
 
 ;; [[file:config.org::*Company][Company:1]]

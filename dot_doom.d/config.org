@@ -33,6 +33,16 @@
       doom-fallback-buffer-name "► Doom"
       +doom-dashboard-name "► Doom")
 (display-time-mode 1)
+(display-battery-mode t)
+
+(+global-word-wrap-mode +1)
+(setq evil-vsplit-window-right t
+      evil-split-window-below t)
+
+
+(defadvice! prompt-for-buffer (&rest _)
+  :after '(evil-window-split evil-window-vsplit)
+  (consult-buffer))
 #+end_src
 ** Company
 #+begin_src emacs-lisp
@@ -529,3 +539,4 @@ https://github.com/seagle0128/doom-modeline
 
 (add-hook 'after-change-major-mode-hook #'doom-modeline-conditional-buffer-encoding)
 #+end_src
+
