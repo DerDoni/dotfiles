@@ -51,11 +51,21 @@
 
 (package! deadgrep)
 (package! org-clock-convenience)
-(package! dired-narrow)
-(package! all-the-icons-dired)
 (package! org-bullets)
-(package! anki-editor)
+(package! anki-editor
+  :recipe (:host github :repo "orgtre/anki-editor"))
 (package! org-download)
-(package! modus-themes)
-(package! mathpix.el
-  :recipe (:host github :repo "jethrokuan/mathpix.el"))
+(package! lsp-haskell)
+(package! org-auto-tangle)
+(package! dired-open)
+(package! dired-subtree)
+(package! dirvish)
+(package! peep-dired)
+(package! emojify)
+(package! ivy-posframe)
+(package! dashboard)
+(package! devdocs)
+(package! csv-mode)
+(package! rust-mode)
+(package! copilot
+  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
